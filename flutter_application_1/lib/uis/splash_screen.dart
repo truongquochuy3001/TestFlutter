@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/register.dart';
+import 'package:flutter_application_1/uis/login.dart';
+import 'package:flutter_application_1/uis/register.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

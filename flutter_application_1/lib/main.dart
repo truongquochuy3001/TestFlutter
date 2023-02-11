@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/food_delivery.dart';
-import 'package:flutter_application_1/login.dart';
-import 'package:flutter_application_1/register.dart';
-import 'package:flutter_application_1/register_2.dart';
+import 'package:flutter_application_1/uis/chat_screen.dart';
+import 'package:flutter_application_1/uis/discover_screen.dart';
+import 'package:flutter_application_1/uis/food_delivery.dart';
+import 'package:flutter_application_1/uis/login.dart';
+import 'package:flutter_application_1/uis/register.dart';
+import 'package:flutter_application_1/uis/register_2.dart';
+import 'package:flutter_application_1/uis/search_screen.dart';
 import 'dart:ui';
 
-import 'package:flutter_application_1/splash_screen.dart';
+import 'package:flutter_application_1/uis/splash_screen.dart';
 
 import 'package:device_preview/device_preview.dart';
 
