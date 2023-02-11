@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/blocs/register_bloc.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
+
+import 'login.dart';
 
 class Register2 extends StatefulWidget {
   const Register2({super.key, required this.userName});
@@ -14,12 +15,13 @@ class Register2 extends StatefulWidget {
 }
 
 class _Register2State extends State<Register2> {
-  final _formKey = GlobalKey<FormState>();
+  RegisterBloc bloc = RegisterBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -56,57 +58,60 @@ class _Register2State extends State<Register2> {
               ),
               Padding(
                 padding: const EdgeInsets.all(14.0),
-                child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                          ),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(10),
-                              hintText: "the ${widget.userName}",
-                            ),
-                            onSaved: (String? value) {},
-                            validator: (String? value) {
-                              if (value!.isEmpty) {
-                                return "Vui long nhap username";
-                              }
-                            },
-                          ),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          bloc.userName = value;
+                        },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: "the ${widget.userName}",
                         ),
-                        const SizedBox(
-                          height: 15,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    StreamBuilder<String>(
+                      stream: bloc.errorMess,
+                      builder: (context, snapshot) {
+                        return Text(
+                          snapshot.data ?? "",
+                          style: const TextStyle(color: Colors.red),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (_formKey.currentState!.validate()) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              const Login())));
-                                }
-                              });
-                            },
-                            child: const Text(
-                              "REGISTER",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                          ),
+                        onPressed: () {
+                          bool isSuccess = bloc.register2();
+                          if (isSuccess) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => Login()),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Text(
+                          "REGISTER",
+                          style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
-                      ],
-                    )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 padding: const EdgeInsets.all(14),
@@ -127,6 +132,7 @@ class _Register2State extends State<Register2> {
                             await launch(
                                 url); //launch is from url_launcher package to launch URL
                           } else {
+                            // ignore: avoid_print
                             print("URL can't be launched.");
                           }
                         }),
